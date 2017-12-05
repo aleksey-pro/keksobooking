@@ -21,7 +21,6 @@ var checkoutTimes = ['12:00', '13:00', '14:00'];
 var offerTypes = ['flat', 'house', 'bungalo'];
 var offerFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-
 // Helper functions
 
 var getRandomNum = function (min, max) {
@@ -210,6 +209,9 @@ mainButton.addEventListener('mouseup', function () {
   }
   filled = true;
   form.classList.remove('notice__form--disabled');
+  for (var l = 0; l < formFields.length; l++) {
+    formFields[l].disabled = false;
+  }
   activeElement = null;
   // activeImg.draggable = false;
 });
@@ -267,3 +269,92 @@ mapPins.addEventListener('keydown', function (evt) {
     activatePin(evt, activePin);
   }
 });
+
+//  Form actions
+
+var form = document.forms[1];
+
+var adrField = form.elements.address;
+adrField.setAttribute('readonly', 'readonly');
+adrField.setAttribute('required', 'required');
+
+var titleField = form.elements.title;
+titleField.setAttribute('required', 'required');
+titleField.setAttribute('maxlength', 100);
+titleField.setAttribute('minlength', 30);
+
+var priceField = form.elements.price;
+priceField.setAttribute('required', 'required');
+priceField.setAttribute('maxlength', 1000000);
+priceField.setAttribute('value', 1000);
+
+var getSelected = function (slectElem) {
+  for (var s = 0; s < slectElem.options.length; s++) {
+    var option = slectElem.options[s];
+    if(option.selected) {
+      return option.value;
+    }
+  }
+};
+
+var setSelected = function (slectElem, value) {
+  for (var s = 0; s < slectElem.options.length; s++) {
+    var option = slectElem.options[s];
+    if(option.value === value) {
+      option.selected = true;
+    };
+  }
+};
+
+var typeSelect = form.elements.type;
+
+if (getSelected(typeSelect) === 'flat') {
+  priceField.setAttribute('minlength', 1000);
+} else if (getSelected(typeSelect) === 'bungalo') {
+  priceField.setAttribute('minlength', 0);
+} else if (getSelected(typeSelect) === 'house') {
+  priceField.setAttribute('minlength', 5000);
+} else if (getSelected(typeSelect) === 'palace') {
+  priceField.setAttribute('minlength', 10000);
+};
+
+var timInSelect = form.elements.timein;
+var timeOutSelect = form.elements.timeout;
+
+timInSelect.addEventListener('change', function (evt) {
+  var selectedTime = getSelected(evt.target);
+  setSelected(timeOutSelect, selectedTime);
+});
+
+timeOutSelect.addEventListener('change', function (evt) {
+  var selectedTime = getSelected(evt.target);
+  setSelected(timInSelect, selectedTime);
+});
+
+var roomsSelect = form.elements.rooms;
+var capacitySelect = form.elements.capacity;
+
+for (var r = 0; r < capacitySelect.options.length; r++) {
+  var option = capacitySelect.options[r];
+    option.disabled = true;
+}
+
+var changeCapacity = function  (sourceEl, targetEl) {
+  for (var s = 0; s < targetEl.options.length; s++) {
+    if (getSelected(sourceEl) === 1) {
+      targetEl[2].disabled = false;
+    } else if (getSelected(sourceEl) === 2) {
+      targetEl[1].disabled = false;
+      targetEl[2].disabled = false;
+    } else if (getSelected(sourceEl) === 3) {
+      targetEl[0].disabled = false;
+      targetEl[1].disabled = false;
+      targetEl[2].disabled = false;
+    }else if (getSelected(sourceEl) === 4) {
+      targetEl[3].disabled = false;
+    };
+  }
+}
+
+changeCapacity(roomsSelect, capacitySelect);
+
