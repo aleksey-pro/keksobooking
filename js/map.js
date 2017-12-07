@@ -295,6 +295,7 @@ var getSelected = function (slectElem) {
       return option.value;
     }
   }
+  return null;
 };
 
 var setSelected = function (slectElem, value) {
