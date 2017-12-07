@@ -21,7 +21,6 @@ var checkoutTimes = ['12:00', '13:00', '14:00'];
 var offerTypes = ['flat', 'house', 'bungalo'];
 var offerFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-
 // Helper functions
 
 var getRandomNum = function (min, max) {
@@ -210,6 +209,9 @@ mainButton.addEventListener('mouseup', function () {
   }
   filled = true;
   form.classList.remove('notice__form--disabled');
+  for (var h = 0; h < formFields.length; h++) {
+    formFields[h].disabled = false;
+  }
   activeElement = null;
   // activeImg.draggable = false;
 });
@@ -266,4 +268,113 @@ mapPins.addEventListener('keydown', function (evt) {
     var activePin = evt.target; // при табе реагируем на нажатие на кнопку
     activatePin(evt, activePin);
   }
+});
+
+//  Form actions
+
+var adrField = form.elements.address;
+adrField.setAttribute('readonly', 'readonly');
+adrField.setAttribute('required', 'required');
+adrField.value = 'Адрес уютной квартиры';
+
+var titleField = form.elements.title;
+titleField.setAttribute('required', 'required');
+titleField.setAttribute('maxlength', 100);
+titleField.setAttribute('minlength', 30);
+
+var priceField = form.elements.price;
+priceField.setAttribute('required', 'required');
+priceField.setAttribute('max', 1000000);
+priceField.setAttribute('value', 1000);
+priceField.setAttribute('min', priceField.value);
+
+var getSelected = function (slectElem) {
+  for (var s = 0; s < slectElem.options.length; s++) {
+    var option = slectElem.options[s];
+    if (option.selected) {
+      return option.value;
+    }
+  }
+  return null;
+};
+
+var setSelected = function (slectElem, value) {
+  for (var s = 0; s < slectElem.options.length; s++) {
+    var option = slectElem.options[s];
+    if (option.value === value) {
+      option.selected = true;
+    }
+  }
+};
+
+var setMinValue = function (slectElem, value) {
+  if (value === 'flat') {
+    slectElem.setAttribute('min', 1000);
+  } else if (value === 'bungalo') {
+    slectElem.setAttribute('min', 0);
+  } else if (value === 'house') {
+    slectElem.setAttribute('min', 5000);
+  } else if (value === 'palace') {
+    slectElem.setAttribute('min', 10000);
+  }
+};
+
+var typeSelect = form.elements.type;
+
+typeSelect.addEventListener('change', function (evt) {
+  var selectedType = getSelected(evt.target);
+  setMinValue(priceField, selectedType);
+});
+
+var timInSelect = form.elements.timein;
+var timeOutSelect = form.elements.timeout;
+
+timInSelect.addEventListener('change', function (evt) {
+  var selectedTime = getSelected(evt.target);
+  setSelected(timeOutSelect, selectedTime);
+});
+
+timeOutSelect.addEventListener('change', function (evt) {
+  var selectedTime = getSelected(evt.target);
+  setSelected(timInSelect, selectedTime);
+});
+
+var roomsSelect = form.elements.rooms;
+var capacitySelect = form.elements.capacity;
+
+for (var s = 0; s < capacitySelect.options.length; s++) {
+  capacitySelect.options[s].disabled = true;
+  capacitySelect.options[s].selected = false;
+  capacitySelect.options[2].disabled = false;
+  capacitySelect.options[2].selected = true;
+}
+
+var changeCapacity = function (targetEl, value) {
+  for (var c = 0; c < targetEl.options.length; c++) {
+    if (value === '1') {
+      targetEl.options[c].disabled = true;
+      targetEl.options[2].selected = true;
+      targetEl.options[2].disabled = false;
+    } else if (value === '2') {
+      targetEl.options[c].disabled = true;
+      targetEl.options[1].selected = true;
+      targetEl.options[1].disabled = false;
+      targetEl.options[2].disabled = false;
+    } else if (value === '3') {
+      targetEl.options[c].disabled = true;
+      targetEl.options[0].selected = true;
+      targetEl.options[0].disabled = false;
+      targetEl.options[1].disabled = false;
+      targetEl.options[2].disabled = false;
+    } else if (value === '100') {
+      targetEl.options[c].disabled = true;
+      targetEl.options[3].disabled = false;
+      targetEl.options[3].selected = true;
+    }
+  }
+};
+
+roomsSelect.addEventListener('change', function (evt) {
+  var selectedRoom = getSelected(evt.target);
+  changeCapacity(capacitySelect, selectedRoom);
 });
