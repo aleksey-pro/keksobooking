@@ -13,9 +13,7 @@
   // Установка полей формы
 
   var adrField = form.elements.address;
-  adrField.setAttribute('readonly', 'readonly');
   adrField.setAttribute('required', 'required');
-  adrField.value = 'Адрес уютной квартиры';
 
   var titleField = form.elements.title;
   titleField.setAttribute('required', 'required');
