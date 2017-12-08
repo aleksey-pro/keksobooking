@@ -5,43 +5,69 @@
   var form = document.querySelector('.notice__form');
   var mapPins = map.querySelector('.map__pins');
   var formFields = form.querySelectorAll('fieldset');
-  var mainButton = document.querySelector('.map__pin--main');
-  var activeElement;
-  var activeImg;
-  var offsetX = 0;
-  var offsetY = 0;
-
-  mainButton.addEventListener('mousedown', function (evt) {
-    activeImg = evt.target;
-    activeElement = activeImg.parentNode;
-    // activeImg.draggable = true;
-    offsetX = evt.offsetX;
-    offsetY = evt.offsetY;
-  });
-
-  mainButton.addEventListener('mousemove', function (evt) {
-    if (activeElement) {
-      activeElement.style.top = (evt.clientY - offsetY) + 'px';
-      activeElement.style.left = (evt.clientX - offsetX) + 'px';
-    }
-  });
-
+  var dragButton = document.querySelector('.map__pin--main');
+  var dragImage = dragButton.querySelector('img');
   var filled = false; // Предотвратить повторное появление пустых пинов
 
-  mainButton.addEventListener('mouseup', function () {
-    map.classList.remove('map--faded');
-    if (!filled) {
-      window.createData.fillPoints(mapPins);
-    }
-    filled = true;
-    form.classList.remove('notice__form--disabled');
-    for (var h = 0; h < formFields.length; h++) {
-      formFields[h].disabled = false;
-    }
-    activeElement = null;
-    // activeImg.draggable = false;
+
+  dragImage.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var getAddrCoords = function () {
+      var adrField = form.elements.address;
+      adrField.value = 'x: ' + evt.clientX + ' y: ' + evt.clientY;
+      adrField.setAttribute('readonly', 'readonly');
+    };
+
+    var startCoords = {
+      x: evt.clientX + evt.offsetWidth / 2,
+      y: evt.clientY + evt.offsetHeight + 22 + 'px'
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      dragButton.style.top = (dragButton.offsetTop - shift.y) + 'px';
+      dragButton.style.left = (dragButton.offsetLeft - shift.x) + 'px';
+
+      if (moveEvt.clientY > 500) {
+        dragButton.style.top = 500 + 'px';
+      } else if (moveEvt.clientY < 100) {
+        dragButton.style.top = 100 + 'px';
+      }
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      map.classList.remove('map--faded');
+      if (!filled) {
+        window.createData.fillPoints(mapPins);
+      }
+      filled = true;
+      form.classList.remove('notice__form--disabled');
+      for (var h = 0; h < formFields.length; h++) {
+        formFields[h].disabled = false;
+      }
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mouseup', getAddrCoords);
+
   });
 
 })();
-
-
