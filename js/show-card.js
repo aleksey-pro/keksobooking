@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+window.showCard = (function () {
 
   var ENTER_KEYCODE = 13;
   var map = document.querySelector('.map');

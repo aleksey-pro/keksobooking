@@ -4,7 +4,6 @@
   var map = document.querySelector('.map');
   var form = document.querySelector('.notice__form');
   var mapPins = map.querySelector('.map__pins');
-  var formFields = form.querySelectorAll('fieldset');
   var dragButton = document.querySelector('.map__pin--main');
   var dragImage = dragButton.querySelector('img');
   var filled = false; // Предотвратить повторное появление пустых пинов
@@ -52,13 +51,10 @@
 
       map.classList.remove('map--faded');
       if (!filled) {
-        window.createData.fillPoints(mapPins);
+        window.fillPoints(mapPins);
       }
       filled = true;
-      form.classList.remove('notice__form--disabled');
-      for (var h = 0; h < formFields.length; h++) {
-        formFields[h].disabled = false;
-      }
+      window.activateForm();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
