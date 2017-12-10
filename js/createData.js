@@ -21,7 +21,7 @@ window.createData = (function () {
 
   var announces = [];
 
-  var createArr = function () {
+  window.createArr = function () {
     var locationX = window.randomFunctions.getRandomNum(300, 900);
     var locationY = window.randomFunctions.getRandomNum(100, 500);
 
@@ -49,25 +49,9 @@ window.createData = (function () {
     };
     announces.push(announce);
 
-    return announces;
-  };
+    window.announces = announces;
 
-  return {
-    fillPoints: function (elem) {
-      for (var k = 0; k < 8; k++) {
-        createArr();
-      }
-      var fragment = document.createDocumentFragment();
-      for (var i = 0; i < announces.length; i++) {
-        fragment.appendChild(window.renderPoints(announces[i], i));
-      }
-      elem.appendChild(fragment);
-    },
-    fillArticle: function (parentelem, elem, idx) {
-      var fragment = document.createDocumentFragment();
-      fragment.appendChild(window.renderArticle(announces[idx]));
-      parentelem.insertBefore(fragment, elem);
-    }
+    return window.announces;
   };
 
 })();

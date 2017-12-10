@@ -2,7 +2,7 @@
 
 (function () {
 
-  window.renderArticle = function (obj) {
+  var renderArticle = function (obj) {
     var offerFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
     var articleTemplate = document.querySelector('template').content.querySelector('.map__card');
     var article = articleTemplate.cloneNode(true);
@@ -41,5 +41,11 @@
 
     return article;
   };
+
+  window.fillArticle = function (parentelem, elem, idx) {
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(renderArticle(announces[idx]));
+    parentelem.insertBefore(fragment, elem);
+  }
 
 })();

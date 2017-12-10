@@ -2,7 +2,7 @@
 
 (function () {
 
-  window.renderPoints = function (obj, idx) {
+  var renderPoints = function (obj, idx) {
     var pointsTemplate = document.querySelector('template').content.querySelector('.map__pin');
     var mapPoint = pointsTemplate.cloneNode(true);
     mapPoint.classList.add('map__pin');
@@ -15,4 +15,14 @@
     return mapPoint;
   };
 
+  window.fillPoints = function (elem) {
+    for (var k = 0; k < 8; k++) {
+      createArr();
+    }
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < window.announces.length; i++) {
+      fragment.appendChild(renderPoints(announces[i], i));
+    }
+    elem.appendChild(fragment);
+  }
 })();
