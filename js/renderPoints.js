@@ -16,9 +16,9 @@
   };
 
   window.fillPoints = function (elem) {
-    for (var k = 0; k < 8; k++) {
-      window.createArr();
-    }
+    // for (var k = 0; k < 8; k++) {
+    //   window.createArr();
+    // }
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < window.announces.length; i++) {
       fragment.appendChild(renderPoints(window.announces[i], i));
