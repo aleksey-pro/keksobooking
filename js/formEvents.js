@@ -16,9 +16,9 @@
 
   var setFormState = function (state) {
     var formFields = form.querySelectorAll('fieldset');
-    [].forEach.call(formFields, function (elem, index) {
-        elem.disabled = state;
-    })
+    [].forEach.call(formFields, function (elem) {
+      elem.disabled = state;
+    });
   };
 
   setFormState(true);
@@ -49,13 +49,12 @@
     element.min = value;
   };
 
-
   // Установка минимальных значений поля типа жилья через универсальную функцию
 
   var typeSelect = form.elements.type;
 
   var onTypeSelect = function () {
-    window.synchronizeFields(typeSelect, priceField, ['flat', 'house', 'bungalo', 'palace'], ['1000', '5000', '0', '10000'], syncValueWithMin)
+    window.synchronizeFields(typeSelect, priceField, ['flat', 'house', 'bungalo', 'palace'], ['1000', '5000', '0', '10000'], syncValueWithMin);
   };
 
   typeSelect.addEventListener('change', onTypeSelect);
@@ -73,8 +72,8 @@
     window.synchronizeFields(timeOutSelect, timeInSelect, ['12:00', '13:00', '14:00'], ['12:00', '13:00', '14:00'], syncValues);
   };
 
- timeInSelect.addEventListener('change', onTimeInSelect);
- timeOutSelect.addEventListener('change', onTimeOutSelect);
+  timeInSelect.addEventListener('change', onTimeInSelect);
+  timeOutSelect.addEventListener('change', onTimeOutSelect);
 
 
   // Установка значений для полей количества комнат и вместимости
@@ -92,7 +91,7 @@
       }
     }
     return null;
-  }
+  };
 
   // Функция установки значения вместимости помещения
 
@@ -119,7 +118,8 @@
         targetEl.options[3].selected = true;
       }
     }
-  }
+  };
+
   // Устанавливаем начальное состояние для capacity
 
   for (var s = 0; s < capacitySelect.options.length; s++) {
@@ -146,7 +146,7 @@
     elem.style.boxShadow = 'none';
     elem.style.borderWidth = '1px';
     elem.style.borderColor = 'red';
-  }
+  };
 
   var resetBgColor = function (elem) {
     elem.style.boxShadow = 'none';
@@ -173,7 +173,7 @@
     } else if (field.validity.tooShort) {
       field.setCustomValidity('Напиши уж подлинее, хотя бы 30 сиволов...');
     } else if (field.validity.rangeOverflow) {
-      priceHousing.setCustomValidity('Дороговато для такого жилья');
+      field.setCustomValidity('Дороговато для такого жилья');
     } else if (field.validity.rangeUnderflow) {
       field.setCustomValidity('Дешево даешь...');
     } else {

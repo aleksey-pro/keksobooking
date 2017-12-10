@@ -17,12 +17,13 @@
 
   window.fillPoints = function (elem) {
     for (var k = 0; k < 8; k++) {
-      createArr();
+      window.createArr();
     }
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < window.announces.length; i++) {
-      fragment.appendChild(renderPoints(announces[i], i));
+      fragment.appendChild(renderPoints(window.announces[i], i));
     }
     elem.appendChild(fragment);
-  }
+  };
+
 })();

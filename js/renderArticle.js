@@ -44,8 +44,8 @@
 
   window.fillArticle = function (parentelem, elem, idx) {
     var fragment = document.createDocumentFragment();
-    fragment.appendChild(renderArticle(announces[idx]));
+    fragment.appendChild(renderArticle(window.announces[idx]));
     parentelem.insertBefore(fragment, elem);
-  }
+  };
 
 })();
