@@ -187,9 +187,41 @@
   priceField.addEventListener('invalid', onInvalidInput);
   priceField.addEventListener('focus', onFocus);
 
+
+  //Создание вспомогательного элемента для ошибок
+
+  var createErrorElem = function () {
+    var errEl = document.createElement('p');
+    errEl.classList.add('err-message');
+    errEl.style.color = 'red';
+    form.appendChild(errEl);
+  };
+
+  // Активация формы после переткивания указателя
+
   window.activateForm = function () {
     form.classList.remove('notice__form--disabled');
     setFormState(false);
+    createErrorElem();
   };
+
+  // Отправка данных формы на сервер
+
+  var onLoad = function (status) {
+    form.reset();
+  };
+  var onError = function (err) {
+    var errMes = form.querySelector('.err-message');
+    errMes.textContent = err;
+  };
+
+  form.addEventListener('submit', function (evt) {
+    var formData = new FormData(form);
+    window.backend.save(formData, onLoad, onError);
+    evt.preventDefault();
+    if(evt.wich === 13) {
+      evt.preventDefault();
+    }
+  }, false);
 
 })();

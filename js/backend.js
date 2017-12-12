@@ -2,40 +2,35 @@
 
 window.backend = (function () {
 
+  var xhr = new XMLHttpRequest();
+
   return {
     load: function (url, onLoad , onError) {
-      var xhr = new XMLHttpRequest();
 
       xhr.addEventListener('load', function () {
         if (xhr.status === 200) {
           onLoad(xhr.response);
         }
       });
-
       xhr.addEventListener('error', function () {
-        onError(xhr.status + ' Произошла ощибка загрузки');
+        onError(xhr.status + ' Произошла ошибка загрузки');
       });
 
-      xhr.open('GET', url);
+      xhr.responseType = 'json';
+      xhr.open('GET', url, true);
       xhr.send();
     },
     save: function (data, onLoad, onError) {
-      var form = document.querySelector('.notice__form');
-      data = new FormData(form);
-      var xhr = new XMLHttpRequest();
 
-      xhr.addEventListener('load', function () {
-        if (xhr.status === 200) {
-          onLoad(xhr.response);
+      xhr.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status == 200) {
+          onLoad(this.status);
+        } else {
+          onError(xhr.status + ' Произошла ошибка загрузки');
         }
-      });
-
-      xhr.addEventListener('error', function () {
-        onError(xhr.status + 'Произошла ощибка загрузки');
-      });
-
-      xhr.open('GET', url);
-      xhr.send();
+      };
+      xhr.open('POST', 'https://1510.dump.academy/keksobooking');
+      xhr.send(data);
     }
   };
 
