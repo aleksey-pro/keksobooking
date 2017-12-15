@@ -25,7 +25,7 @@ window.backend = (function () {
       var xhr = new XMLHttpRequest();
 
       xhr.addEventListener('loadend', function () {
-        if (xhr.status == 200) {
+        if (xhr.status === 200) {
           onLoad();
         } else {
           onError(xhr.status);
