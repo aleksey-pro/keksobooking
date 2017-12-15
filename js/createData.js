@@ -4,10 +4,14 @@
 
 window.createData = (function () {
 
-  var onLoad = function (data) {
-     window.announces = data;
-     return window.announces
+  // Экспортируем из полученных данных массив с объявлениями при успешной загрузке
+
+  var onLoad = function (resp) {
+     window.announces = resp;
+     return window.announces;
   };
+
+  // Выводим текст и статус ошибки в элемент формы
 
   var onError = function (err) {
     var form = document.querySelector('.notice__form');
@@ -15,5 +19,7 @@ window.createData = (function () {
     errMes.textContent = err;
   };
 
-  window.backend.load('https://1510.dump.academy/keksobooking/data', onLoad, onError);
+  // Вызываем метод из модуля загрузки данных
+
+  window.backend.load(onLoad, onError);
 })();

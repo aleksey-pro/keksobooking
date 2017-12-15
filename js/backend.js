@@ -2,10 +2,10 @@
 
 window.backend = (function () {
 
-  var xhr = new XMLHttpRequest();
-
   return {
-    load: function (url, onLoad , onError) {
+    load: function (onLoad, onError) {
+
+      var xhr = new XMLHttpRequest();
 
       xhr.addEventListener('load', function () {
         if (xhr.status === 200) {
@@ -17,18 +17,21 @@ window.backend = (function () {
       });
 
       xhr.responseType = 'json';
-      xhr.open('GET', url, true);
+      xhr.open('GET', 'https://1510.dump.academy/keksobooking/data');
       xhr.send();
     },
     save: function (data, onLoad, onError) {
 
-      xhr.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status == 200) {
-          onLoad(this.status);
+      var xhr = new XMLHttpRequest();
+
+      xhr.addEventListener('loadend', function (evt) {
+        if (xhr.status == 200) {
+          onLoad();
         } else {
-          onError(xhr.status + ' Произошла ошибка загрузки');
+          console.log(xhr.status + ' Данные не высланы');
         }
-      };
+      });
+
       xhr.open('POST', 'https://1510.dump.academy/keksobooking');
       xhr.send(data);
     }

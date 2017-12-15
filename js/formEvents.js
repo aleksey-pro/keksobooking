@@ -207,7 +207,7 @@
 
   // Отправка данных формы на сервер
 
-  var onLoad = function (status) {
+  var onLoad = function () {
     form.reset();
   };
   var onError = function (err) {
@@ -219,7 +219,7 @@
     var formData = new FormData(form);
     window.backend.save(formData, onLoad, onError);
     evt.preventDefault();
-    if(evt.wich === 13) {
+    if(evt.which === 13) {
       evt.preventDefault();
     }
   }, false);
