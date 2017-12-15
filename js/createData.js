@@ -7,8 +7,8 @@ window.createData = (function () {
   // Экспортируем из полученных данных массив с объявлениями при успешной загрузке
 
   var onLoad = function (resp) {
-     window.announces = resp;
-     return window.announces;
+    window.announces = resp;
+    return window.announces;
   };
 
   // Выводим текст и статус ошибки в элемент формы

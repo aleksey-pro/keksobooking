@@ -2,13 +2,14 @@
 
 (function () {
 
-  // Переменные
+  // Констаеты и переменные
 
   var MAX_TITLE_LENGTH = 100;
   var MIN_TITLE_LENGTH = 30;
   var PRICE_VALUE = 1000;
   var PRICE_MAX = 1000000;
   var PRICE_MIN = 1000;
+  var ENTER_KEYCODE = 13;
 
   var form = document.querySelector('.notice__form');
 
@@ -187,8 +188,7 @@
   priceField.addEventListener('invalid', onInvalidInput);
   priceField.addEventListener('focus', onFocus);
 
-
-  //Создание вспомогательного элемента для ошибок
+  // Создание вспомогательного элемента для ошибок
 
   var createErrorElem = function () {
     var errEl = document.createElement('p');
@@ -212,14 +212,14 @@
   };
   var onError = function (err) {
     var errMes = form.querySelector('.err-message');
-    errMes.textContent = err;
+    errMes.textContent = err + ' Данные не высланы';
   };
 
   form.addEventListener('submit', function (evt) {
     var formData = new FormData(form);
     window.backend.save(formData, onLoad, onError);
     evt.preventDefault();
-    if(evt.which === 13) {
+    if (evt.which === ENTER_KEYCODE) {
       evt.preventDefault();
     }
   }, false);

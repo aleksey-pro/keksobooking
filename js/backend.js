@@ -24,11 +24,11 @@ window.backend = (function () {
 
       var xhr = new XMLHttpRequest();
 
-      xhr.addEventListener('loadend', function (evt) {
+      xhr.addEventListener('loadend', function () {
         if (xhr.status == 200) {
           onLoad();
         } else {
-          console.log(xhr.status + ' Данные не высланы');
+          onError(xhr.status);
         }
       });
 
