@@ -5,14 +5,11 @@
 window.createData = (function () {
 
   // Экспортируем из полученных данных массив с объявлениями при успешной загрузке
-
-  var onLoad = function (resp) {
-    window.announces = resp;
-    return window.announces;
+  var onLoad = function (data) {
+    window.mapFilters.transferData(data);
   };
 
   // Выводим текст и статус ошибки в элемент формы
-
   var onError = function (err) {
     var form = document.querySelector('.notice__form');
     var errMes = form.querySelector('.err-message');
@@ -20,6 +17,5 @@ window.createData = (function () {
   };
 
   // Вызываем метод из модуля загрузки данных
-
   window.backend.load(onLoad, onError);
 })();

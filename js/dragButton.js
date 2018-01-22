@@ -51,7 +51,7 @@
 
       map.classList.remove('map--faded');
       if (!filled) {
-        window.fillPoints(mapPins);
+        window.map.appendPins();
       }
       filled = true;
       window.activateForm();

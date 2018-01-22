@@ -32,10 +32,8 @@
         ul.appendChild(li);
       }
     };
-
     var randOffers = window.randomFunctions.getRandomLengthArr(offerFeatures);
     createRandFeature(randOffers);
-
     article.getElementsByTagName('p')[4].textContent = obj.offer.description;
     article.querySelector('.popup__avatar').src = obj.author.avatar;
 
@@ -44,8 +42,8 @@
 
   window.fillArticle = function (parentelem, elem, idx) {
     var fragment = document.createDocumentFragment();
-    fragment.appendChild(renderArticle(window.announces[idx]));
-    parentelem.insertBefore(fragment, elem);
+      fragment.appendChild(renderArticle(window.mapFilters.filteredData[idx]));
+      parentelem.insertBefore(fragment, elem);
   };
 
 })();

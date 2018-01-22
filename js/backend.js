@@ -2,37 +2,32 @@
 
 window.backend = (function () {
 
+  var URL = '';
+  var SUCCESS = 200;
+
+  var createRequest = function (onLoad, onError) {
+    var xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', function () {
+      if (xhr.status === SUCCESS) {
+        onLoad(xhr.response);
+      }
+    });
+    xhr.addEventListener('error', function () {
+      onError(xhr.status + ' Произошла ошибка загрузки');
+    });
+    xhr.responseType = 'json';
+    return xhr;
+  }
+
   return {
     load: function (onLoad, onError) {
-
-      var xhr = new XMLHttpRequest();
-
-      xhr.addEventListener('load', function () {
-        if (xhr.status === 200) {
-          onLoad(xhr.response);
-        }
-      });
-      xhr.addEventListener('error', function () {
-        onError(xhr.status + ' Произошла ошибка загрузки');
-      });
-
-      xhr.responseType = 'json';
-      xhr.open('GET', 'https://1510.dump.academy/keksobooking/data');
+      var xhr = createRequest (onLoad, onError);
+      xhr.open('GET', URL);
       xhr.send();
     },
     save: function (data, onLoad, onError) {
-
-      var xhr = new XMLHttpRequest();
-
-      xhr.addEventListener('loadend', function () {
-        if (xhr.status === 200) {
-          onLoad();
-        } else {
-          onError(xhr.status);
-        }
-      });
-
-      xhr.open('POST', 'https://1510.dump.academy/keksobooking');
+      var xhr =createRequest (onLoad, onError);
+      xhr.open('POST', URL);
       xhr.send(data);
     }
   };

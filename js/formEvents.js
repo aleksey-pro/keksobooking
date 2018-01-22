@@ -84,7 +84,7 @@
 
   // Функция получения значения выбранного поля
 
-  var getSelected = function (slectElem) {
+  window.getSelected = function (slectElem) {
     for (var s = 0; s < slectElem.options.length; s++) {
       var option = slectElem.options[s];
       if (option.selected) {
@@ -133,7 +133,7 @@
   // Обратываем сценарий выбора количества
 
   roomsSelect.addEventListener('change', function (evt) {
-    var selectedRoom = getSelected(evt.target);
+    var selectedRoom = window.getSelected(evt.target);
     changeCapacity(capacitySelect, selectedRoom);
   });
 
