@@ -39,10 +39,10 @@ window.mapFunctions = (function () {
   };
 
   return {
-    activatePin: function (evt, activePin) {
+    activatePin: function (evt, activePin, data) {
       if (activePin.classList.contains('map__pin') && !activePin.classList.contains('map__pin--main')) {
         removeArticle();
-        var dataIndex = activePin.getAttribute('data-pin');
+        var dataIndex = activePin.getAttribute('data-num-pin');
         window.fillArticle(parentToArticle, articleBlock, dataIndex);
         var pins = mapPins.querySelectorAll('.map__pin');
         deactivatePins(pins);

@@ -2,13 +2,14 @@
 
 (function () {
 
-  // Переменные
+  // Констаеты и переменные
 
   var MAX_TITLE_LENGTH = 100;
   var MIN_TITLE_LENGTH = 30;
   var PRICE_VALUE = 1000;
   var PRICE_MAX = 1000000;
   var PRICE_MIN = 1000;
+  var ENTER_KEYCODE = 13;
 
   var form = document.querySelector('.notice__form');
 
@@ -83,7 +84,7 @@
 
   // Функция получения значения выбранного поля
 
-  var getSelected = function (slectElem) {
+  window.getSelected = function (slectElem) {
     for (var s = 0; s < slectElem.options.length; s++) {
       var option = slectElem.options[s];
       if (option.selected) {
@@ -132,7 +133,7 @@
   // Обратываем сценарий выбора количества
 
   roomsSelect.addEventListener('change', function (evt) {
-    var selectedRoom = getSelected(evt.target);
+    var selectedRoom = window.getSelected(evt.target);
     changeCapacity(capacitySelect, selectedRoom);
   });
 
@@ -187,9 +188,40 @@
   priceField.addEventListener('invalid', onInvalidInput);
   priceField.addEventListener('focus', onFocus);
 
+  // Создание вспомогательного элемента для ошибок
+
+  var createErrorElem = function () {
+    var errEl = document.createElement('p');
+    errEl.classList.add('err-message');
+    errEl.style.color = 'red';
+    form.appendChild(errEl);
+  };
+
+  // Активация формы после переткивания указателя
+
   window.activateForm = function () {
     form.classList.remove('notice__form--disabled');
     setFormState(false);
+    createErrorElem();
   };
+
+  // Отправка данных формы на сервер
+
+  var onLoad = function () {
+    form.reset();
+  };
+  var onError = function (err) {
+    var errMes = form.querySelector('.err-message');
+    errMes.textContent = err + ' Данные не высланы';
+  };
+
+  form.addEventListener('submit', function (evt) {
+    var formData = new FormData(form);
+    window.backend.save(formData, onLoad, onError);
+    evt.preventDefault();
+    if (evt.which === ENTER_KEYCODE) {
+      evt.preventDefault();
+    }
+  }, false);
 
 })();
