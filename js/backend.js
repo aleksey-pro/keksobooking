@@ -2,7 +2,7 @@
 
 window.backend = (function () {
 
-  var URL = '';
+  var URL = 'https://raw.githubusercontent.com/davegahn/keksobooking/master/data.json';
   var SUCCESS = 200;
 
   var createRequest = function (onLoad, onError) {
