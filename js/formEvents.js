@@ -422,8 +422,6 @@
     if(photoToDelete){
       photoToDelete.remove();
     }
-    
-    // window.backend.removeError();
   };
   resetbutton.addEventListener('click', function (evt) {
     resetForm();
@@ -446,8 +444,10 @@
    */
   fileChoosers[0].addEventListener('change', onChooserAvatarChange);
   fileChoosers[1].addEventListener('change', onChooserPhotoChange);
-  // Событие отправки формы на сервер
-  // formNotice.addEventListener('submit', onFormSubmit);
+  /**
+   * Событие отправки формы на сервер
+   */
+  formNotice.addEventListener('submit', onFormSubmit);
   
   
 })();

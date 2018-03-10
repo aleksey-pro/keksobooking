@@ -7,7 +7,9 @@
 
 window.backend = (function () {
 
+
   var URL = 'https://raw.githubusercontent.com/davegahn/keksobooking/master';
+
   var SUCCESS = 200;
   
   /**
