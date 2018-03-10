@@ -1,21 +1,36 @@
 'use strict';
 
-// Создаем массив карточек и пинов исходя из полученных с сервера данных
+
+/**
+ * Модуль создания точек на карте
+ */
 
 window.createData = (function () {
+  
+  /**
+   * Функция экспорта отфильтрованных данных в массив с объявлениями
+   * @param {String} data
+   */
 
-  // Экспортируем из полученных данных массив с объявлениями при успешной загрузке
   var onLoad = function (data) {
     window.mapFilters.transferData(data);
   };
+  
+  /**
+   * Функция вывода ошибки в DOM-элемент
+   * @param {String} err
+   */
 
-  // Выводим текст и статус ошибки в элемент формы
   var onError = function (err) {
     var form = document.querySelector('.notice__form');
     var errMes = form.querySelector('.err-message');
     errMes.textContent = err;
   };
-
-  // Вызываем метод из модуля загрузки данных
+  
+  /**
+   * Вызываем метод из модуля загрузки данных
+   * @external ./backend
+   */
+  
   window.backend.load(onLoad, onError);
 })();

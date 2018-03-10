@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * Модуль событий карты
+ * @returns {Function} activatePin
+ */
+
 window.mapFunctions = (function () {
 
   var ESC_KEYCODE = 27;
@@ -7,13 +12,22 @@ window.mapFunctions = (function () {
   var mapPins = map.querySelector('.map__pins');
   var articleBlock = map.querySelector('.map__filters-container');
   var parentToArticle = articleBlock.parentNode;
-
+  
+  /**
+   * Функция удаления объявления
+   */
+  
   var removeArticle = function () {
     var article = map.querySelector('article');
     if (article) {
       map.removeChild(article);
     }
   };
+  
+  /**
+   * Функция деактивации меток
+   * @param {NodeList} elems
+   */
 
   var deactivatePins = function (elems) {
     for (var m = 0; m < elems.length; m++) {
@@ -22,6 +36,10 @@ window.mapFunctions = (function () {
       }
     }
   };
+  
+  /**
+   * Функция вызова событий при нажатии кнопки закрытия объявления или кнопки Escape
+   */
 
   var enableCloseArticle = function () {
     var articleClose = map.querySelector('.popup__close');
@@ -39,6 +57,13 @@ window.mapFunctions = (function () {
   };
 
   return {
+  
+    /**
+     * Функция открытия объявления
+     * @param {MouseEvent} evt
+     * @param {Element} activePin
+     * @param {Array} data
+     */
     activatePin: function (evt, activePin, data) {
       if (activePin.classList.contains('map__pin') && !activePin.classList.contains('map__pin--main')) {
         removeArticle();

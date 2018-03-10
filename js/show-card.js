@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * Модуль показа соответсвующего объявления при нажатии на метку
+ */
+
 window.showCard = (function () {
 
   var ENTER_KEYCODE = 13;

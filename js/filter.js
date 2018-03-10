@@ -1,32 +1,53 @@
 'use strict';
+/**
+ * Модуль фильтрации меток исходя из данных фильтров
+ */
+
 (function () {
-  // ==========================================================================
-  // Константы и переменные
-  // =========================================================================
+  /**
+   * Число меток при загрузке
+   * @type {number}
+   */
   var SHOW_PIN = 5;
-  // Рабочая копия массива полученных с сервера данных
+  /**
+   * Рабочая копия массива полученных с сервера данных
+   * @type {Array}
+   */
   var dataCopy = [];
-  // объект c текущими значениями фильтров
+  /**
+   * Объект c текущими значениями фильтров
+   * @type {{type: string, price: string, rooms: string, guests: string}}
+   */
   var filterValue = {
     type: 'any',
     price: 'any',
     rooms: 'any',
     guests: 'any'
   };
-  // Отмеченные пользователем удобства
+  /**
+   * Отмеченные пользователем удобства
+   * @type {Array}
+   */
   var checkedFeatures = [];
-  // Фильтры
+  /**
+   * Фильтры
+    */
   var filterForm = document.querySelector('.map__filters');
   var filterType = filterForm.querySelector('#housing-type');
   var filterPrice = filterForm.querySelector('#housing-price');
   var filterRooms = filterForm.querySelector('#housing-rooms');
   var filterGuests = filterForm.querySelector('#housing-guests');
   var filterFeatures = filterForm.querySelector('#housing-features');
-  // =========================================================================
-  // Массив с функциями фильтров
-  // =========================================================================
+  /**
+   * Массив с функциями фильтров
+   * @type {Array}
+   */
   var filterFunctions = [
-    // Фильтр по типу жилья
+    /**
+     * Фильтр по типу жилья
+     * @param {Array.<Object>} arr
+     * @returns {Array.<Object>} arr
+     */
     function (arr) {
       if (filterValue.type !== 'any') {
         arr = arr.filter(function (element) {
@@ -35,7 +56,11 @@
       }
       return arr;
     },
-    // Фильтр по стоимости
+    /**
+     * Фильтр по стоимости
+     * @param {Array.<Object>} arr
+     * @returns {Array.<Object>} arr
+     */
     function (arr) {
       switch (filterValue.price) {
         case 'any':
@@ -57,7 +82,11 @@
       }
       return arr;
     },
-    // Фильтр по количеству комнат
+    /**
+     * Фильтр по количеству комнат
+     * @param {Array.<Object>} arr
+     * @returns {Array.<Object>} arr
+     */
     function (arr) {
       if (filterValue.rooms !== 'any') {
         arr = arr.filter(function (element) {
@@ -66,7 +95,11 @@
       }
       return arr;
     },
-    // Фильтр по количеству гостей
+    /**
+     * Фильтр по количеству гостей
+     * @param {Array.<Object>} arr
+     * @returns {Array.<Object>} arr
+     */
     function (arr) {
       if (filterValue.guests !== 'any') {
         arr = arr.filter(function (element) {
@@ -75,7 +108,11 @@
       }
       return arr;
     },
-    // Фильтр по удобствам
+    /**
+     * Фильтр по удобствам
+     * @param {Array.<Object>} arr
+     * @returns {Array.<Object>} arr
+     */
     function (arr) {
       return arr.filter(function (element) {
         return checkedFeatures.every(function (currentFeature) {
@@ -84,26 +121,43 @@
       });
     }
   ];
-  // ==========================================================================
-  // Функция фильтрации
-  // =========================================================================
+  /**
+   * Функция фильтрации
+   * @param {MouseEvent} evt
+   */
   var onFiltersChange = function (evt) {
-    // Выставляем значение сработавшего фильтра в объекте текущих значений фильтров
+  
+    /**
+     * Выставляем значение сработавшего фильтра в объекте текущих значений фильтров
+     * @type {string}
+     */
     var filterName = evt.target.name.substring(8);
     filterValue[filterName] = evt.target.value;
-    // Копируем исходные данные для фильтрования
+    /**
+     * Копируем исходные данные для фильтрования
+     * @type {Array.<*>}
+     */
     window.mapFilters.filteredData = dataCopy.slice();
-    // Получаем список отмеченных чекбоксов
+    /**
+     * Получаем список отмеченных чекбоксов
+     * @type {NodeList}
+     */
     var checkedElements = filterFeatures.querySelectorAll('input[type="checkbox"]:checked');
-    // Преобразуем список в массив строк
+    /**
+     * Преобразуем список в массив строк
+     */
     checkedFeatures = [].map.call(checkedElements, function (element) {
       return element.value;
     });
-    // Получаем массив данных после обработки системой фильтров
+    /**
+     * Получаем массив данных после обработки системой фильтров
+     */
     filterFunctions.forEach(function (getFiltered) {
       window.mapFilters.filteredData = getFiltered(window.mapFilters.filteredData);
     });
-    // Обрезаем полученный массив до необходимой длинны
+    /**
+     * Обрезаем полученный массив до необходимой длины
+     */
     if (window.mapFilters.filteredData.length > SHOW_PIN) {
       window.mapFilters.filteredData = window.mapFilters.filteredData.slice(0, SHOW_PIN);
     }
@@ -111,23 +165,24 @@
     // Добавляем пины на страницу через установленный тайм-аут
     window.debounce(window.map.appendPins);
   };
-  // ==========================================================================
-  // Обработчики событий изменения фильтров
-  // ==========================================================================
+  /**
+   * Обработчики событий изменения фильтров
+   */
   filterType.addEventListener('change', onFiltersChange);
   filterPrice.addEventListener('change', onFiltersChange);
   filterRooms.addEventListener('change', onFiltersChange);
   filterGuests.addEventListener('change', onFiltersChange);
   filterFeatures.addEventListener('change', onFiltersChange);
-  // ==========================================================================
-  // Экспортируем функцию, принимающую массив данных с сервера,
-  // и отфильтрованный массив данных
-  // ==========================================================================
+  /**
+   * Экспортируем функцию, принимающую массив данных с сервера, и отфильтрованный массив данных
+   * @type {{filteredData: Array, transferData: Window.mapFilters.transferData}}
+   */
+  
   window.mapFilters = {
     filteredData: [],
     transferData: function (data) {
       dataCopy = data.slice();
       this.filteredData = data.slice(0, SHOW_PIN);
-    },
+    }
   };
 })();
